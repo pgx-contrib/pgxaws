@@ -1,11 +1,4 @@
-# pgxaws
-
-An AWS credentials for pgx
-
-## Getting Started
-
-```golang
-package main
+package pgxaws_test
 
 import (
 	"context"
@@ -16,7 +9,9 @@ import (
 	"github.com/pgx-contrib/pgxaws"
 )
 
-func main() {
+var count int
+
+func ExampleBeforeConnect() {
 	// postgres://user@host:port/database?aws_region=us-east-1
 	config, err := pgxpool.ParseConfig(os.Getenv("PGX_DATABASE_URL"))
 	if err != nil {
@@ -40,4 +35,3 @@ func main() {
 		panic(err)
 	}
 }
-```
