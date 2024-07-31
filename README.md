@@ -1,0 +1,2 @@
+# pgxaws
+An AWS credentials
