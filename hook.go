@@ -29,6 +29,8 @@ func BeforeConnect(ctx context.Context, conn *pgx.ConnConfig) error {
 
 			// set the token as password
 			conn.Password = token
+			// remove the region from the runtime parameters
+			delete(conn.RuntimeParams, "aws_region")
 		}
 	}
 
