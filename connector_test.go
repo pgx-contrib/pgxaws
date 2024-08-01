@@ -11,8 +11,7 @@ import (
 
 var count int
 
-func ExampleBeforeConnect() {
-	// postgres://user@host:port/database?aws_region=us-east-1
+func ExampleConnector() {
 	config, err := pgxpool.ParseConfig(os.Getenv("PGX_DATABASE_URL"))
 	if err != nil {
 		panic(err)
@@ -22,8 +21,11 @@ func ExampleBeforeConnect() {
 	// Note: this will refresh connections before the 15 min expiration on the IAM AWS auth token,
 	// while leveraging the BeforeConnect hook to recreate the token in time dynamically.
 	config.MaxConnLifetime = 5 * time.Minute
+
+	// Create a new pgxaws.Connector
+	connector := &pgxaws.Connector{}
 	// Set BeforeConnect hook to pgxaws.BeforeConnect
-	config.BeforeConnect = pgxaws.BeforeConnect
+	config.BeforeConnect = connector.BeforeConnect
 
 	conn, err := pgxpool.NewWithConfig(context.TODO(), config)
 	if err != nil {
