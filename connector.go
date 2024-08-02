@@ -13,11 +13,18 @@ import (
 type Connector struct {
 	// Options to configure the AWS session
 	Options []func(*config.LoadOptions) error
+	// SkipAuth skips the authentication
+	SkipAuth bool
 }
 
 // BeforeConnect is called before a new connection is made. It is passed a copy of the underlying pgx.ConnConfig and
 // will not impact any existing open connections.
 func (x *Connector) BeforeConnect(ctx context.Context, conn *pgx.ConnConfig) error {
+	// skip any authentication
+	if x.SkipAuth {
+		return nil
+	}
+
 	if conn.User != "" {
 		session, err := config.LoadDefaultConfig(ctx, x.Options...)
 		if err != nil {
