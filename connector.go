@@ -13,35 +13,39 @@ import (
 type Connector struct {
 	// Options to configure the AWS session
 	Options []func(*config.LoadOptions) error
-	// SkipAuth skips the authentication
-	SkipAuth bool
 }
 
 // BeforeConnect is called before a new connection is made. It is passed a copy of the underlying pgx.ConnConfig and
 // will not impact any existing open connections.
 func (x *Connector) BeforeConnect(ctx context.Context, conn *pgx.ConnConfig) error {
-	// skip any authentication
-	if x.SkipAuth {
+	// if there is no user, we can't issue a token
+	if conn.User == "" {
 		return nil
 	}
 
-	if conn.User != "" {
-		session, err := config.LoadDefaultConfig(ctx, x.Options...)
-		if err != nil {
-			return err
-		}
-
-		// prepare the endpoint
-		endpoint := conn.Host + ":" + strconv.Itoa(int(conn.Port))
-		// issue the token
-		token, err := auth.BuildAuthToken(ctx, endpoint, session.Region, conn.User, session.Credentials)
-		if err != nil {
-			return err
-		}
-
-		// set the token as password
-		conn.Password = token
+	// prepare the AWS settings
+	settings, err := config.LoadDefaultConfig(ctx, x.Options...)
+	if err != nil {
+		return err
 	}
 
+	// if there is no region, we can't issue a token
+	if settings.Region == "" {
+		return nil
+	}
+
+	// issue the token
+	token, err := auth.BuildAuthToken(ctx, x.endpoint(conn), settings.Region, conn.User, settings.Credentials)
+	if err != nil {
+		return err
+	}
+
+	// set the token as password
+	conn.Password = token
+	// done!
 	return nil
+}
+
+func (x *Connector) endpoint(conn *pgx.ConnConfig) string {
+	return conn.Host + ":" + strconv.Itoa(int(conn.Port))
 }
