@@ -12,7 +12,7 @@ import (
 	"github.com/pgx-contrib/pgxcache"
 )
 
-func ExampleCacher() {
+func ExampleDynamoQueryCacher() {
 	config, err := pgxpool.ParseConfig(os.Getenv("PGX_DATABASE_URL"))
 	if err != nil {
 		panic(err)
@@ -34,8 +34,8 @@ func ExampleCacher() {
 		// -- @cache-max-rows 100
 		// -- @cache-ttl 30s
 		Options: &pgxcache.QueryOptions{
-			MaxLiftime: 30 * time.Second,
-			MaxRows:    1,
+			MaxLifetime: 30 * time.Second,
+			MaxRows:     1,
 		},
 		Cacher:  cacher,
 		Querier: conn,
