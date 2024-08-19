@@ -19,8 +19,7 @@ type DynamoQuery struct {
 
 var _ pgxcache.QueryCacher = &DynamoQueryCacher{}
 
-// DynamoQueryCacher implements cache.DynamoQueryCacher interface to use redis as backend with
-// go-redis as the redis client library.
+// DynamoQueryCacher implements pgxcache.QueryCacher interface to use Dynamo DB.
 type DynamoQueryCacher struct {
 	client *dynamo.DB
 	table  string
@@ -35,7 +34,7 @@ func NewDynamoQueryCacher(client dynamodbiface.DynamoDBAPI, table string) *Dynam
 	}
 }
 
-// Get gets a cache item from redis. Returns pointer to the item, a boolean
+// Get gets a cache item from Dynamo DB. Returns pointer to the item, a boolean
 // which represents whether key exists or not and an error.
 func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxcache.QueryResult, error) {
 	// get the record
@@ -58,7 +57,7 @@ func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*p
 	}
 }
 
-// Set sets the given item into redis with provided TTL duration.
+// Set sets the given item into Dynamo DB with provided TTL duration.
 func (r *DynamoQueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *pgxcache.QueryResult, ttl time.Duration) error {
 	data, err := msgpack.Marshal(item)
 	if err != nil {
