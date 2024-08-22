@@ -2,11 +2,13 @@ package pgxaws_test
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/pgx-contrib/pgxaws"
 	"github.com/pgx-contrib/pgxcache"
@@ -22,6 +24,8 @@ func ExampleDynamoQueryCacher() {
 	if err != nil {
 		panic(err)
 	}
+	// close the connection
+	defer conn.Close()
 
 	// Create a new client
 	client := NewClient()
@@ -41,9 +45,26 @@ func ExampleDynamoQueryCacher() {
 		Querier: conn,
 	}
 
-	row := querier.QueryRow(context.TODO(), "SELECT 1")
-	if err := row.Scan(&count); err != nil {
+	rows, err := querier.Query(context.TODO(), "SELECT * from customer")
+	if err != nil {
 		panic(err)
+	}
+	// close the rows
+	defer rows.Close()
+
+	// Customer struct must be defined
+	type Customer struct {
+		FirstName string `db:"first_name"`
+		LastName  string `db:"last_name"`
+	}
+
+	for rows.Next() {
+		customer, err := pgx.RowToStructByName[Customer](rows)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(customer.FirstName)
 	}
 }
 
