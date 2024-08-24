@@ -1,11 +1,16 @@
 package pgxaws
 
 import (
+	"bytes"
 	"context"
+	"errors"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/guregu/dynamo/v2"
-	"github.com/guregu/dynamo/v2/dynamodbiface"
 	"github.com/pgx-contrib/pgxcache"
 	"github.com/vmihailenco/msgpack/v4"
 )
@@ -22,7 +27,7 @@ var _ pgxcache.QueryCacher = &DynamoQueryCacher{}
 // DynamoQueryCacher implements pgxcache.QueryCacher interface to use Dynamo DB.
 type DynamoQueryCacher struct {
 	// Client to interact with Dynamo DB
-	Client dynamodbiface.DynamoDBAPI
+	Client *dynamodb.Client
 	// Table name in Dynamo DB
 	Table string
 }
@@ -32,17 +37,19 @@ type DynamoQueryCacher struct {
 func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxcache.QueryResult, error) {
 	// get the record
 	row := &DynamoQuery{}
+	// wrap the client
+	client := dynamo.NewFromIface(r.Client)
 	// get the item from the table
-	err := r.client().Table(r.Table).Get("query_id", key.String()).One(ctx, row)
+	err := client.Table(r.Table).Get("query_id", key.String()).One(ctx, row)
 
 	switch err {
 	case nil:
-		var item pgxcache.QueryResult
+		item := &pgxcache.QueryResult{}
 		// unmarshal the result
-		if err := msgpack.Unmarshal(row.Data, &item); err != nil {
+		if err := msgpack.Unmarshal(row.Data, item); err != nil {
 			return nil, err
 		}
-		return &item, nil
+		return item, nil
 	case dynamo.ErrNotFound:
 		return nil, nil
 	default:
@@ -64,10 +71,73 @@ func (r *DynamoQueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, ite
 		ExpireAt: time.Now().UTC().Add(ttl),
 	}
 
-	return r.client().Table(r.Table).Put(row).Run(ctx)
+	// wrap the client
+	client := dynamo.NewFromIface(r.Client)
+	// put the item in the table
+	return client.Table(r.Table).Put(row).Run(ctx)
 }
 
-// client returns the dynamo.DB client from the given dynamodbiface.DynamoDBAPI.
-func (r *DynamoQueryCacher) client() *dynamo.DB {
-	return dynamo.NewFromIface(r.Client)
+var _ pgxcache.QueryCacher = &S3QueryCacher{}
+
+// S3QueryCacher implements pgxcache.QueryCacher interface to use S3.
+type S3QueryCacher struct {
+	// Client to interact with S3
+	Client *s3.Client
+	// Bucket name in S3
+	Bucket string
+}
+
+// Get implements pgxcache.QueryCacher.
+func (r *S3QueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxcache.QueryResult, error) {
+	// preapre the args
+	args := &s3.GetObjectInput{
+		Bucket: aws.String(r.Bucket),
+		Key:    aws.String(key.String()),
+	}
+
+	// put the item in the bucket
+	row, err := r.Client.GetObject(ctx, args)
+	switch err {
+	case nil:
+		item := &pgxcache.QueryResult{}
+		// unmarshal the result
+		if err := msgpack.NewDecoder(row.Body).Decode(item); err != nil {
+			return nil, err
+		}
+		return item, nil
+	default:
+		var nerr *types.NotFound
+		// if the error is not found
+		if errors.As(err, &nerr) {
+			return nil, nil
+		}
+
+		var kerr *types.NoSuchKey
+		// if the error is not found
+		if errors.As(err, &kerr) {
+			return nil, nil
+		}
+		// done
+		return nil, err
+	}
+}
+
+// Set implements pgxcache.QueryCacher.
+func (r *S3QueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *pgxcache.QueryResult, ttl time.Duration) error {
+	data, err := msgpack.Marshal(item)
+	if err != nil {
+		return err
+	}
+
+	// preapre the args
+	args := &s3.PutObjectInput{
+		Bucket:  aws.String(r.Bucket),
+		Key:     aws.String(key.String()),
+		Body:    bytes.NewReader(data),
+		Expires: aws.Time(time.Now().UTC().Add(ttl)),
+	}
+
+	// put the item in the bucket
+	_, err = r.Client.PutObject(ctx, args)
+	return err
 }
