@@ -27,10 +27,11 @@ func ExampleDynamoQueryCacher() {
 	// close the connection
 	defer conn.Close()
 
-	// Create a new client
-	client := NewClient()
 	// Create a new cacher
-	cacher := pgxaws.NewDynamoQueryCacher(client, "queries")
+	cacher := &pgxaws.DynamoQueryCacher{
+		Client: NewClient(),
+		Table:  "queries",
+	}
 
 	// create a new querier
 	querier := &pgxcache.Querier{

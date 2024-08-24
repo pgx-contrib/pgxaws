@@ -21,17 +21,10 @@ var _ pgxcache.QueryCacher = &DynamoQueryCacher{}
 
 // DynamoQueryCacher implements pgxcache.QueryCacher interface to use Dynamo DB.
 type DynamoQueryCacher struct {
-	client *dynamo.DB
-	table  string
-}
-
-// NewDynamoQueryCacher creates a new instance of dynamodb backend using dynamodb client.
-// All rows created in dynamodb by pgxcache will have stored with table.
-func NewDynamoQueryCacher(client dynamodbiface.DynamoDBAPI, table string) *DynamoQueryCacher {
-	return &DynamoQueryCacher{
-		client: dynamo.NewFromIface(client),
-		table:  table,
-	}
+	// Client to interact with Dynamo DB
+	Client dynamodbiface.DynamoDBAPI
+	// Table name in Dynamo DB
+	Table string
 }
 
 // Get gets a cache item from Dynamo DB. Returns pointer to the item, a boolean
@@ -40,7 +33,7 @@ func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*p
 	// get the record
 	row := &DynamoQuery{}
 	// get the item from the table
-	err := r.client.Table(r.table).Get("query_id", key.String()).One(ctx, row)
+	err := r.client().Table(r.Table).Get("query_id", key.String()).One(ctx, row)
 
 	switch err {
 	case nil:
@@ -71,5 +64,10 @@ func (r *DynamoQueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, ite
 		ExpireAt: time.Now().UTC().Add(ttl),
 	}
 
-	return r.client.Table(r.table).Put(row).Run(ctx)
+	return r.client().Table(r.Table).Put(row).Run(ctx)
+}
+
+// client returns the dynamo.DB client from the given dynamodbiface.DynamoDBAPI.
+func (r *DynamoQueryCacher) client() *dynamo.DB {
+	return dynamo.NewFromIface(r.Client)
 }
