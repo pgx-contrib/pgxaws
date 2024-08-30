@@ -71,8 +71,8 @@ github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6
 github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-github.com/guregu/dynamo/v2 v2.2.0 h1:RvqrebP7NXhANOjdXHHjAoFRAaCpbaLNddvuadHBOFU=
-github.com/guregu/dynamo/v2 v2.2.0/go.mod h1:fUKI2LycE+efoMAdgLvAtleD02KgrQUN0tfm39Q2mmI=
+github.com/guregu/dynamo/v2 v2.2.1 h1:1YR/tqQIwwFFE7YBXTuMCslyxp0xQ5yjF1UOWshRxpM=
+github.com/guregu/dynamo/v2 v2.2.1/go.mod h1:fUKI2LycE+efoMAdgLvAtleD02KgrQUN0tfm39Q2mmI=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=
 github.com/jackc/pgpassfile v1.0.0/go.mod h1:CEx0iS5ambNFdcRtxPj5JhEz+xB6uRky5eyVu/W2HEg=
 github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 h1:iCEnooe7UlwOQYpKFhBabPMi4aNAfoODPEFNiAnClxo=
