@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.4.16
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.34.6
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.61.0
-	github.com/guregu/dynamo/v2 v2.2.0
+	github.com/guregu/dynamo/v2 v2.2.1
 	github.com/jackc/pgx/v5 v5.6.0
 	github.com/pgx-contrib/pgxcache v0.0.0-20240818140817-64a76fed9127
 	github.com/vmihailenco/msgpack/v4 v4.3.13
