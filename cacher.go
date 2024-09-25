@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
@@ -30,6 +31,19 @@ type DynamoQueryCacher struct {
 	Client *dynamodb.Client
 	// Table name in Dynamo DB
 	Table string
+}
+
+// NewDynamoQueryCacher creates a new instance of DynamoQueryCacher.
+func NewDynamoQueryCacher(table string) *DynamoQueryCacher {
+	conf, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		panic(err)
+	}
+
+	return &DynamoQueryCacher{
+		Client: dynamodb.NewFromConfig(conf),
+		Table:  table,
+	}
 }
 
 // Get gets a cache item from Dynamo DB. Returns pointer to the item, a boolean
