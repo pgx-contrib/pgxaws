@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"io"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -13,7 +14,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/guregu/dynamo/v2"
 	"github.com/pgx-contrib/pgxcache"
-	"github.com/vmihailenco/msgpack/v4"
 )
 
 // DynamoQuery represents a record in the dynamodb table.
@@ -60,9 +60,10 @@ func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*p
 	case nil:
 		item := &pgxcache.QueryResult{}
 		// unmarshal the result
-		if err := msgpack.Unmarshal(row.Data, item); err != nil {
+		if err := item.UnmarshalText(row.Data); err != nil {
 			return nil, err
 		}
+
 		return item, nil
 	case dynamo.ErrNotFound:
 		return nil, nil
@@ -73,7 +74,7 @@ func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*p
 
 // Set sets the given item into Dynamo DB with provided TTL duration.
 func (r *DynamoQueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *pgxcache.QueryResult, ttl time.Duration) error {
-	data, err := msgpack.Marshal(item)
+	data, err := item.MarshalText()
 	if err != nil {
 		return err
 	}
@@ -89,6 +90,12 @@ func (r *DynamoQueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, ite
 	client := dynamo.NewFromIface(r.Client)
 	// put the item in the table
 	return client.Table(r.Table).Put(row).Run(ctx)
+}
+
+// Reset implements pgxcache.QueryCacher.
+func (r *DynamoQueryCacher) Reset(context.Context) error {
+	// TODO: implement this method
+	return nil
 }
 
 var _ pgxcache.QueryCacher = &S3QueryCacher{}
@@ -113,11 +120,17 @@ func (r *S3QueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxca
 	row, err := r.Client.GetObject(ctx, args)
 	switch err {
 	case nil:
-		item := &pgxcache.QueryResult{}
-		// unmarshal the result
-		if err := msgpack.NewDecoder(row.Body).Decode(item); err != nil {
+		data, err := io.ReadAll(row.Body)
+		if err != nil {
 			return nil, err
 		}
+
+		item := &pgxcache.QueryResult{}
+		// unmarshal the result
+		if err := item.UnmarshalText(data); err != nil {
+			return nil, err
+		}
+
 		return item, nil
 	default:
 		var nerr *types.NotFound
@@ -138,7 +151,7 @@ func (r *S3QueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxca
 
 // Set implements pgxcache.QueryCacher.
 func (r *S3QueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *pgxcache.QueryResult, ttl time.Duration) error {
-	data, err := msgpack.Marshal(item)
+	data, err := item.MarshalText()
 	if err != nil {
 		return err
 	}
@@ -154,4 +167,10 @@ func (r *S3QueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *p
 	// put the item in the bucket
 	_, err = r.Client.PutObject(ctx, args)
 	return err
+}
+
+// Reset implements pgxcache.QueryCacher.
+func (r *S3QueryCacher) Reset(context.Context) error {
+	// TODO: implement this method
+	return nil
 }
