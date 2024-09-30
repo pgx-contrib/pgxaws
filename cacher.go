@@ -48,7 +48,7 @@ func NewDynamoQueryCacher(table string) *DynamoQueryCacher {
 
 // Get gets a cache item from Dynamo DB. Returns pointer to the item, a boolean
 // which represents whether key exists or not and an error.
-func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxcache.QueryResult, error) {
+func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxcache.QueryItem, error) {
 	// get the record
 	row := &DynamoQuery{}
 	// wrap the client
@@ -58,7 +58,7 @@ func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*p
 
 	switch err {
 	case nil:
-		item := &pgxcache.QueryResult{}
+		item := &pgxcache.QueryItem{}
 		// unmarshal the result
 		if err := item.UnmarshalText(row.Data); err != nil {
 			return nil, err
@@ -73,7 +73,7 @@ func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*p
 }
 
 // Set sets the given item into Dynamo DB with provided TTL duration.
-func (r *DynamoQueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *pgxcache.QueryResult, ttl time.Duration) error {
+func (r *DynamoQueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *pgxcache.QueryItem, lifetime time.Duration) error {
 	data, err := item.MarshalText()
 	if err != nil {
 		return err
@@ -83,7 +83,7 @@ func (r *DynamoQueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, ite
 	row := &DynamoQuery{
 		ID:       key.String(),
 		Data:     data,
-		ExpireAt: time.Now().UTC().Add(ttl),
+		ExpireAt: time.Now().UTC().Add(lifetime),
 	}
 
 	// wrap the client
@@ -109,7 +109,7 @@ type S3QueryCacher struct {
 }
 
 // Get implements pgxcache.QueryCacher.
-func (r *S3QueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxcache.QueryResult, error) {
+func (r *S3QueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxcache.QueryItem, error) {
 	// preapre the args
 	args := &s3.GetObjectInput{
 		Bucket: aws.String(r.Bucket),
@@ -125,7 +125,7 @@ func (r *S3QueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxca
 			return nil, err
 		}
 
-		item := &pgxcache.QueryResult{}
+		item := &pgxcache.QueryItem{}
 		// unmarshal the result
 		if err := item.UnmarshalText(data); err != nil {
 			return nil, err
@@ -150,7 +150,7 @@ func (r *S3QueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxca
 }
 
 // Set implements pgxcache.QueryCacher.
-func (r *S3QueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *pgxcache.QueryResult, ttl time.Duration) error {
+func (r *S3QueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *pgxcache.QueryItem, ttl time.Duration) error {
 	data, err := item.MarshalText()
 	if err != nil {
 		return err
