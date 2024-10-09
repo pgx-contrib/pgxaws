@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.32.2
 	github.com/aws/aws-sdk-go-v2/config v1.27.43
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.4.21
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.36.1
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.36.2
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.65.2
 	github.com/guregu/dynamo/v2 v2.2.1
 	github.com/jackc/pgx/v5 v5.7.1
@@ -27,7 +27,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.23.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.4.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.10.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.10.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.18.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.24.2 // indirect
