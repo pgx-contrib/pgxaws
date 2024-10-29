@@ -41,7 +41,7 @@ func (x *Connector) BeforeConnect(ctx context.Context, conn *pgx.ConnConfig) err
 	}
 
 	// set the token as password
-	conn.Password = token
+	(*conn).Password = token
 	// done!
 	return nil
 }
