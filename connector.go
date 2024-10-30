@@ -45,32 +45,32 @@ func (x *Connector) BeforeConnect(ctx context.Context, config *pgx.ConnConfig) (
 		return nil
 	}
 
-	timeline := time.Now()
+	now := time.Now()
 	// get the token
 	token := x.token.Load()
 	// issue new token
-	if token == nil || token.Expired(timeline) {
+	if token == nil || token.Expired(now) {
 		// issue new token
 		token = &bearer.Token{
-			Expires:   timeline.Add(10 * time.Minute),
+			Expires:   now.Add(10 * time.Minute),
 			CanExpire: true,
 		}
 		// issue the token
-		token.Value, err = auth.BuildAuthToken(ctx, x.endpoint(config), x.config.Region, config.User, x.config.Credentials)
-		if err != nil {
+		if token.Value, err = x.auth(ctx, config); err != nil {
 			return err
 		}
-
 		// set the token
 		x.token.Store(token)
 	}
 
 	// set the token as password
-	(*config).Password = token.Value
+	config.Password = token.Value
 	// done!
 	return nil
 }
 
-func (x *Connector) endpoint(conn *pgx.ConnConfig) string {
-	return conn.Host + ":" + strconv.Itoa(int(conn.Port))
+func (x *Connector) auth(ctx context.Context, config *pgx.ConnConfig) (string, error) {
+	endpoint := config.Host + ":" + strconv.Itoa(int(config.Port))
+	// build token
+	return auth.BuildAuthToken(ctx, endpoint, x.config.Region, config.User, x.config.Credentials)
 }
