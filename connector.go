@@ -3,45 +3,70 @@ package pgxaws
 import (
 	"context"
 	"strconv"
+	"sync/atomic"
+	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/rds/auth"
+	"github.com/aws/smithy-go/auth/bearer"
 	"github.com/jackc/pgx/v5"
 )
 
 // Connector connects the the pgx to AWS RDS.
 type Connector struct {
-	// Options to configure the AWS session
-	Options []func(*config.LoadOptions) error
+	// token is the bearer token.
+	token atomic.Pointer[bearer.Token]
+	// config is the AWS configuration.
+	config aws.Config
+}
+
+// Connect creates a new connector.
+func Connect(ctx context.Context, options ...func(*config.LoadOptions) error) (*Connector, error) {
+	// prepare the AWS settings
+	config, err := config.LoadDefaultConfig(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Connector{config: config}, nil
 }
 
 // BeforeConnect is called before a new connection is made. It is passed a copy of the underlying pgx.ConnConfig and
 // will not impact any existing open connections.
-func (x *Connector) BeforeConnect(ctx context.Context, conn *pgx.ConnConfig) error {
+func (x *Connector) BeforeConnect(ctx context.Context, config *pgx.ConnConfig) (err error) {
 	// if there is no user, we can't issue a token
-	if conn.User == "" {
+	if config.User == "" {
 		return nil
-	}
-
-	// prepare the AWS settings
-	settings, err := config.LoadDefaultConfig(ctx, x.Options...)
-	if err != nil {
-		return err
 	}
 
 	// if there is no region, we can't issue a token
-	if settings.Region == "" {
+	if x.config.Region == "" {
 		return nil
 	}
 
-	// issue the token
-	token, err := auth.BuildAuthToken(ctx, x.endpoint(conn), settings.Region, conn.User, settings.Credentials)
-	if err != nil {
-		return err
+	timeline := time.Now()
+	// get the token
+	token := x.token.Load()
+	// issue new token
+	if token == nil || token.Expired(timeline) {
+		// issue new token
+		token = &bearer.Token{
+			Expires:   timeline.Add(10 * time.Minute),
+			CanExpire: true,
+		}
+		// issue the token
+		token.Value, err = auth.BuildAuthToken(ctx, x.endpoint(config), x.config.Region, config.User, x.config.Credentials)
+		if err != nil {
+			return err
+		}
+
+		// set the token
+		x.token.Store(token)
 	}
 
 	// set the token as password
-	(*conn).Password = token
+	(*config).Password = token.Value
 	// done!
 	return nil
 }
