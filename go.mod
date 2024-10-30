@@ -1,8 +1,8 @@
 module github.com/pgx-contrib/pgxaws
 
-go 1.22.6
+go 1.23
 
-toolchain go1.23.0
+toolchain go1.23.2
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.32.3
@@ -13,7 +13,7 @@ require (
 	github.com/aws/smithy-go v1.22.0
 	github.com/guregu/dynamo/v2 v2.2.1
 	github.com/jackc/pgx/v5 v5.7.1
-	github.com/pgx-contrib/pgxcache v0.0.0-20241029100610-52f305b34fdd
+	github.com/pgx-contrib/pgxcache v0.0.0-20241030071949-0f8c0f2ebc7e
 )
 
 require (
@@ -36,7 +36,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.32.3 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/dgraph-io/ristretto v1.0.1 // indirect
+	github.com/dgraph-io/ristretto/v2 v2.0.0-alpha // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
