@@ -23,8 +23,9 @@ func ExampleConnector() {
 		panic(err)
 	}
 
-	// Set BeforeConnect hook to pgxaws.BeforeConnect
+	config.MinConns = 1
 	config.BeforeConnect = connector.BeforeConnect
+	config.BeforeClose = connector.BeforeClose
 
 	// Create a new pgxpool with the config
 	conn, err := pgxpool.NewWithConfig(ctx, config)
