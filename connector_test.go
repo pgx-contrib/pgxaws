@@ -22,17 +22,20 @@ func ExampleConnector() {
 	if err != nil {
 		panic(err)
 	}
+	// close the connector
+	defer connector.Close()
 
-	// Set BeforeConnect hook to pgxaws.BeforeConnect
 	config.BeforeConnect = connector.BeforeConnect
 
 	// Create a new pgxpool with the config
-	conn, err := pgxpool.NewWithConfig(ctx, config)
+	pool, err := pgxpool.NewWithConfig(ctx, config)
 	if err != nil {
 		panic(err)
 	}
+	// close the pool
+	defer pool.Close()
 
-	rows, err := conn.Query(ctx, "SELECT * from organization")
+	rows, err := pool.Query(ctx, "SELECT * from organization")
 	if err != nil {
 		panic(err)
 	}
