@@ -7,7 +7,7 @@ toolchain go1.23.2
 require (
 	github.com/aws/aws-sdk-go-v2 v1.36.1
 	github.com/aws/aws-sdk-go-v2/config v1.29.6
-	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.5.8
+	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.5.9
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.76.0
 	github.com/aws/smithy-go v1.22.2
