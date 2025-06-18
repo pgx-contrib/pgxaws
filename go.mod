@@ -3,7 +3,7 @@ module github.com/pgx-contrib/pgxaws
 go 1.23.0
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.36.4
+	github.com/aws/aws-sdk-go-v2 v1.36.5
 	github.com/aws/aws-sdk-go-v2/config v1.29.16
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.5.12
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.43.3
