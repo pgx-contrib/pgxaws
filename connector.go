@@ -110,7 +110,7 @@ func (x *Connector) session(ctx context.Context, config *pgx.ConnConfig) {
 
 func (x *Connector) authorize(ctx context.Context, config *pgx.ConnConfig) (*string, error) {
 	auth := &RDSAuth{
-		config: &x.config,
+		Config: &x.config,
 	}
 
 	return auth.Authorize(ctx, config)
