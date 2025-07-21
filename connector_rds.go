@@ -9,6 +9,8 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
+var _ Authorizer = (*RDSAuth)(nil)
+
 // RDSAuth is an implementation of pgxaws.Auth that uses AWS RDS IAM authentication.
 type RDSAuth struct {
 	// Config is the AWS configuration.

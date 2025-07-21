@@ -2,7 +2,9 @@ package pgxaws
 
 import (
 	"context"
+	"fmt"
 	"slices"
+	"strings"
 	"sync/atomic"
 	"time"
 
@@ -108,9 +110,21 @@ func (x *Connector) session(ctx context.Context, config *pgx.ConnConfig) {
 	}
 }
 
+// Authorizer is an interface that defines the authorization method for the connector.
+type Authorizer interface {
+	Authorize(ctx context.Context, config *pgx.ConnConfig) (*string, error)
+}
+
 func (x *Connector) authorize(ctx context.Context, config *pgx.ConnConfig) (*string, error) {
-	auth := &RDSAuth{
-		Config: &x.config,
+	var auth Authorizer
+
+	switch {
+	case strings.Contains(config.Host, ".rds."):
+		auth = &RDSAuth{Config: &x.config}
+	case strings.Contains(config.Host, ".dsql."):
+		auth = &DSQLAuth{Config: &x.config}
+	default:
+		return nil, fmt.Errorf("unsupported")
 	}
 
 	return auth.Authorize(ctx, config)

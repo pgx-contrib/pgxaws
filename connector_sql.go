@@ -8,6 +8,8 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
+var _ Authorizer = (*DSQLAuth)(nil)
+
 // DSQLAuth is an implementation of pgxaws.Auth that uses AWS DSQL IAM authentication.
 type DSQLAuth struct {
 	// Config is the AWS configuration.
@@ -18,10 +20,10 @@ type DSQLAuth struct {
 func (x *DSQLAuth) Authorize(ctx context.Context, config *pgx.ConnConfig) (*string, error) {
 	var BuildAuthToken func(ctx context.Context, endpoint, region string, creds aws.CredentialsProvider, optFns ...func(options *auth.TokenOptions)) (string, error)
 
-	if config.User != "admin" {
-		BuildAuthToken = auth.GenerateDbConnectAuthToken
-	} else {
+	if config.User == "admin" {
 		BuildAuthToken = auth.GenerateDBConnectAdminAuthToken
+	} else {
+		BuildAuthToken = auth.GenerateDbConnectAuthToken
 	}
 
 	// build token
