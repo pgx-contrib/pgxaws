@@ -49,11 +49,11 @@ func NewDynamoQueryCacher(table string) *DynamoQueryCacher {
 // Get gets a cache item from Dynamo DB. Returns pointer to the item, a boolean
 // which represents whether key exists or not and an error.
 func (r *DynamoQueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxcache.QueryItem, error) {
-	// get the record
+	// Get the record
 	row := &DynamoQuery{}
-	// wrap the client
+	// Wrap the client
 	client := dynamo.NewFromIface(r.Client)
-	// get the item from the table
+	// Get the item from the table
 	err := client.Table(r.Table).Get("query_id", key.String()).One(ctx, row)
 
 	switch err {
@@ -110,37 +110,32 @@ type S3QueryCacher struct {
 
 // Get implements pgxcache.QueryCacher.
 func (r *S3QueryCacher) Get(ctx context.Context, key *pgxcache.QueryKey) (*pgxcache.QueryItem, error) {
-	// preapre the args
 	args := &s3.GetObjectInput{
 		Bucket: aws.String(r.Bucket),
 		Key:    aws.String(key.String()),
 	}
 
-	// put the item in the bucket
 	row, err := r.Client.GetObject(ctx, args)
 	switch err {
 	case nil:
-		data, err := io.ReadAll(row.Body)
-		if err != nil {
-			return nil, err
+		data, rerr := io.ReadAll(row.Body)
+		if rerr != nil {
+			return nil, rerr
 		}
 
 		item := &pgxcache.QueryItem{}
-		// unmarshal the result
-		if err := item.UnmarshalText(data); err != nil {
-			return nil, err
+		if uerr := item.UnmarshalText(data); uerr != nil {
+			return nil, uerr
 		}
 
 		return item, nil
 	default:
 		var nerr *types.NotFound
-		// if the error is not found
 		if errors.As(err, &nerr) {
 			return nil, nil
 		}
 
 		var kerr *types.NoSuchKey
-		// if the error is not found
 		if errors.As(err, &kerr) {
 			return nil, nil
 		}
@@ -156,7 +151,6 @@ func (r *S3QueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *p
 		return err
 	}
 
-	// preapre the args
 	args := &s3.PutObjectInput{
 		Bucket:  aws.String(r.Bucket),
 		Key:     aws.String(key.String()),
@@ -164,7 +158,6 @@ func (r *S3QueryCacher) Set(ctx context.Context, key *pgxcache.QueryKey, item *p
 		Expires: aws.Time(time.Now().UTC().Add(ttl)),
 	}
 
-	// put the item in the bucket
 	_, err = r.Client.PutObject(ctx, args)
 	return err
 }

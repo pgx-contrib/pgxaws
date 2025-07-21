@@ -14,13 +14,13 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// Connector connects the the pgx to AWS RDS.
+// Connector connects the pgx to AWS RDS.
 type Connector struct {
-	// close is the close function.
+	// Close is the close function.
 	close func()
-	// token is the bearer token.
+	// Token is the bearer token.
 	token atomic.Pointer[string]
-	// config is the AWS configuration.
+	// Config is the AWS configuration.
 	config aws.Config
 }
 
@@ -89,7 +89,7 @@ func (x *Connector) Close() {
 	x.close()
 }
 
-// session refreshes the token.
+// Session refreshes the token.
 func (x *Connector) session(ctx context.Context, config *pgx.ConnConfig) {
 	ticker := time.NewTicker(10 * time.Minute)
 
