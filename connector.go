@@ -3,13 +3,11 @@ package pgxaws
 import (
 	"context"
 	"slices"
-	"strconv"
 	"sync/atomic"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/feature/rds/auth"
 	"github.com/aws/smithy-go/logging"
 	"github.com/jackc/pgx/v5"
 )
@@ -111,12 +109,9 @@ func (x *Connector) session(ctx context.Context, config *pgx.ConnConfig) {
 }
 
 func (x *Connector) authorize(ctx context.Context, config *pgx.ConnConfig) (*string, error) {
-	endpoint := config.Host + ":" + strconv.Itoa(int(config.Port))
-	// build token
-	token, err := auth.BuildAuthToken(ctx, endpoint, x.config.Region, config.User, x.config.Credentials)
-	if err != nil {
-		return nil, err
+	auth := &RDSAuth{
+		config: &x.config,
 	}
 
-	return &token, nil
+	return auth.Authorize(ctx, config)
 }
