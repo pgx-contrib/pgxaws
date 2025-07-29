@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	github.com/aws/aws-sdk-go-v2 v1.37.0
 	github.com/aws/aws-sdk-go-v2/config v1.29.18
-	github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.0.12
+	github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.0
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.5.14
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.45.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.84.1
