@@ -3,10 +3,10 @@ module github.com/pgx-contrib/pgxaws
 go 1.23.0
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.37.1
+	github.com/aws/aws-sdk-go-v2 v1.37.2
 	github.com/aws/aws-sdk-go-v2/config v1.30.2
 	github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.0
-	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.0
+	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.2
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.45.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.85.0
 	github.com/aws/smithy-go v1.22.5
