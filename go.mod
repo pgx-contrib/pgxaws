@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.38.2
-	github.com/aws/aws-sdk-go-v2/config v1.31.4
+	github.com/aws/aws-sdk-go-v2/config v1.31.5
 	github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.5
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.5
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.49.2
@@ -17,7 +17,7 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.0 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.18.8 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.18.9 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.20.3 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.18.5 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.5 // indirect
@@ -30,7 +30,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.11.5 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.5 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.19.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.28.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.29.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.34.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.38.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
