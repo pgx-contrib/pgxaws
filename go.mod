@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.87.2
 	github.com/aws/smithy-go v1.23.0
 	github.com/guregu/dynamo/v2 v2.4.0
-	github.com/jackc/pgx/v5 v5.7.5
+	github.com/jackc/pgx/v5 v5.7.6
 	github.com/pgx-contrib/pgxcache v0.0.0-20241030071949-0f8c0f2ebc7e
 )
 
