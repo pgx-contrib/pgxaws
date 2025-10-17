@@ -3,7 +3,7 @@ module github.com/pgx-contrib/pgxaws
 go 1.23.0
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.39.2
+	github.com/aws/aws-sdk-go-v2 v1.39.3
 	github.com/aws/aws-sdk-go-v2/config v1.31.12
 	github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.9
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.9
