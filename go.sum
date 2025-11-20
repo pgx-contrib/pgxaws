@@ -1,13 +1,13 @@
-github.com/aws/aws-sdk-go-v2 v1.39.6 h1:2JrPCVgWJm7bm83BDwY5z8ietmeJUbh3O2ACnn+Xsqk=
-github.com/aws/aws-sdk-go-v2 v1.39.6/go.mod h1:c9pm7VwuW0UPxAEYGyTmyurVcNrbF6Rt/wixFqDhcjE=
+github.com/aws/aws-sdk-go-v2 v1.40.0 h1:/WMUA0kjhZExjOQN2z3oLALDREea1A7TobfuiBrKlwc=
+github.com/aws/aws-sdk-go-v2 v1.40.0/go.mod h1:c9pm7VwuW0UPxAEYGyTmyurVcNrbF6Rt/wixFqDhcjE=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.3 h1:DHctwEM8P8iTXFxC/QK0MRjwEpWQeM9yzidCRjldUz0=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.3/go.mod h1:xdCzcZEtnSTKVDOmUZs4l/j3pSV6rpo1WXl5ugNsL8Y=
 github.com/aws/aws-sdk-go-v2/config v1.31.20 h1:/jWF4Wu90EhKCgjTdy1DGxcbcbNrjfBHvksEL79tfQc=
 github.com/aws/aws-sdk-go-v2/config v1.31.20/go.mod h1:95Hh1Tc5VYKL9NJ7tAkDcqeKt+MCXQB1hQZaRdJIZE0=
 github.com/aws/aws-sdk-go-v2/credentials v1.18.24 h1:iJ2FmPT35EaIB0+kMa6TnQ+PwG5A1prEdAw+PsMzfHg=
 github.com/aws/aws-sdk-go-v2/credentials v1.18.24/go.mod h1:U91+DrfjAiXPDEGYhh/x29o4p0qHX5HDqG7y5VViv64=
-github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.13 h1:cVJ5bNrtVpRUvPeyp+A4kw+6NpyfuQDRtq3nEJ+An1s=
-github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.13/go.mod h1:3uIYS7qslHyiMNoX15Wk4dt6JOKLGlxKvOsNOVxQj6o=
+github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.14 h1:JN+Of7L95UHd5CxDWHQytQBXkG6GgrXu1CWKoUpdj/A=
+github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.14/go.mod h1:3dk+sOzRfe0K2Fa+zaVa4bVdGI0GpcI0iZBhN6+ordQ=
 github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.20.3 h1:RrxJ6g7+jG1lY2nhn7GlRiW4vITuYlfwh/PrW5d84S0=
 github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.20.3/go.mod h1:e4y84j44vA9IFksSDDuAtNj9t3W20iJlsbXhbo/JU10=
 github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.18.13 h1:T1brd5dR3/fzNFAQch/iBKeX07/ffu/cLu+q+RuzEWk=
