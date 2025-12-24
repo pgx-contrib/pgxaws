@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.16
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.16
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.53.5
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.94.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.95.0
 	github.com/aws/smithy-go v1.24.0
 	github.com/guregu/dynamo/v2 v2.5.0
 	github.com/jackc/pgx/v5 v5.7.6
