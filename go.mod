@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/dsql/auth v1.1.19
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.19
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.56.1
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.96.3
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.96.4
 	github.com/aws/smithy-go v1.24.2
 	github.com/guregu/dynamo/v2 v2.5.0
 	github.com/jackc/pgx/v5 v5.8.0
@@ -23,7 +23,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.19 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.19 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.5 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.4.19 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.4.20 // indirect
 	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.29.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.9.11 // indirect
