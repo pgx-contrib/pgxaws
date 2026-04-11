@@ -128,7 +128,7 @@ The project uses [Nix](https://nixos.org/) for reproducible development environm
 
 ```bash
 nix develop
-go test ./...
+go tool ginkgo run -r --race
 ```
 
 **With Dev Containers:**
