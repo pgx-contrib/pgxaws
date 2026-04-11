@@ -1,0 +1,6 @@
+services:
+  workspace:
+    image: mcr.microsoft.com/devcontainers/base:bookworm
+    volumes:
+      - ..:/home/vscode/workspace:cached
+    command: sleep infinity

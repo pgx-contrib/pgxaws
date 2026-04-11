@@ -1,29 +1,52 @@
-name: Dependabot Auto-merge
+name: CI
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
 
 on:
+  push:
+    branches: [main]
   pull_request:
-
-permissions: write-all
+    branches: [main]
 
 jobs:
-  dependabot:
+  build:
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
-      - name: automerge
-        uses: actions/github-script@v9.0.0
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Start DevContainer
+        uses: devcontainer-env/devcontainer-ci@v1
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v22
+
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v13
         with:
-          script: |
-            github.rest.pulls.createReview({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-              event: 'APPROVE'
-            })
-            github.rest.pulls.merge({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-              merge_method: "rebase",
-            })
-          github-token: ${{ github.token }}
+          use-flakehub: false
+
+      - name: Run Tests
+        run: nix develop --command go test ./...
+
+  release:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Create Release PR
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          manifest-file: .github/config/release-please-manifest.json
+          config-file: .github/config/release-please-config.json
+          target-branch: main
