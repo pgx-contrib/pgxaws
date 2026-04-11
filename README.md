@@ -120,22 +120,36 @@ querier := &pgxcache.Querier{
 rows, err := querier.Query(context.TODO(), "SELECT * from customer")
 ```
 
-## Contributing
+## Development
 
-The project uses [Nix](https://nixos.org/) for reproducible development environments and supports [Dev Containers](https://containers.dev/).
+### DevContainer
 
-**With Nix:**
+Open in VS Code with the Dev Containers extension. The environment provides Go,
+PostgreSQL 18, and Nix automatically.
 
-```bash
-nix develop
-go tool ginkgo run -r --race
+```
+PGX_DATABASE_URL=postgres://vscode@postgres:5432/pgxaws?sslmode=disable
 ```
 
-**With Dev Containers:**
+### Nix
 
-Open the repository in VS Code or GitHub Codespaces — the devcontainer will configure the environment automatically.
+```bash
+nix develop          # enter shell with Go
+go tool ginkgo run -r
+```
 
-Note: integration tests require real AWS infrastructure (RDS/DSQL/DynamoDB/S3). Unit tests can be run locally without AWS credentials.
+### Run tests
+
+```bash
+# Unit tests only (no database required)
+go tool ginkgo run -r
+
+# With integration tests
+export PGX_DATABASE_URL="postgres://localhost/pgxaws?sslmode=disable"
+go tool ginkgo run -r
+```
+
+Integration tests require real AWS infrastructure (RDS/DSQL/DynamoDB/S3) and are skipped automatically when credentials are not set.
 
 ## License
 
