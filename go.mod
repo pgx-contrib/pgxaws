@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.57.1
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.99.0
 	github.com/aws/smithy-go v1.24.3
-	github.com/guregu/dynamo/v2 v2.5.0
+	github.com/guregu/dynamo/v2 v2.6.0
 	github.com/jackc/pgx/v5 v5.9.1
 	github.com/onsi/ginkgo/v2 v2.28.1
 	github.com/onsi/gomega v1.39.1
