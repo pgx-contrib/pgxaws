@@ -1,6 +1,6 @@
 # pgxaws
 
-[![CI](https://github.com/pgx-contrib/pgxaws/actions/workflows/ci.yaml/badge.svg)](https://github.com/pgx-contrib/pgxaws/actions/workflows/ci.yaml)
+[![CI](https://github.com/pgx-contrib/pgxaws/actions/workflows/ci.yml/badge.svg)](https://github.com/pgx-contrib/pgxaws/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/pgx-contrib/pgxaws)](https://github.com/pgx-contrib/pgxaws/releases)
 [![Go Reference](https://pkg.go.dev/badge/github.com/pgx-contrib/pgxaws.svg)](https://pkg.go.dev/github.com/pgx-contrib/pgxaws)
 [![License](https://img.shields.io/github/license/pgx-contrib/pgxaws)](LICENSE)
