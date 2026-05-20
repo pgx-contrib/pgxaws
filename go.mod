@@ -12,8 +12,8 @@ require (
 	github.com/aws/smithy-go v1.25.1
 	github.com/guregu/dynamo/v2 v2.6.0
 	github.com/jackc/pgx/v5 v5.9.2
-	github.com/onsi/ginkgo/v2 v2.28.3
-	github.com/onsi/gomega v1.40.0
+	github.com/onsi/ginkgo/v2 v2.29.0
+	github.com/onsi/gomega v1.41.0
 	github.com/pgx-contrib/pgxcache v0.0.0-20260410020444-2c456fcd21ee
 )
 
