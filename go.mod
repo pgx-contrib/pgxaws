@@ -14,7 +14,7 @@ require (
 	github.com/jackc/pgx/v5 v5.11.0
 	github.com/onsi/ginkgo/v2 v2.33.0
 	github.com/onsi/gomega v1.43.1
-	github.com/pgx-contrib/pgxcache v0.0.0-20260410020444-2c456fcd21ee
+	github.com/pgx-contrib/pgxcache v0.0.0-20260923062715-d67793bc4f3a
 )
 
 require (
@@ -38,7 +38,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.51.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/dgraph-io/ristretto/v2 v2.4.0 // indirect
+	github.com/dgraph-io/ristretto/v2 v2.4.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect

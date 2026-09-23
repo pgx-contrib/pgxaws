@@ -55,8 +55,8 @@ github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XL
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/dgraph-io/ristretto/v2 v2.4.0 h1:I/w09yLjhdcVD2QV192UJcq8dPBaAJb9pOuMyNy0XlU=
-github.com/dgraph-io/ristretto/v2 v2.4.0/go.mod h1:0KsrXtXvnv0EqnzyowllbVJB8yBonswa2lTCK2gGo9E=
+github.com/dgraph-io/ristretto/v2 v2.4.2 h1:x0cvjmUKxt764Yxdk2nr94we1AvPPAMh1rh5TQ+Jo80=
+github.com/dgraph-io/ristretto/v2 v2.4.2/go.mod h1:0KsrXtXvnv0EqnzyowllbVJB8yBonswa2lTCK2gGo9E=
 github.com/dgryski/go-farm v0.0.0-20240924180020-3414d57e47da h1:aIftn67I1fkbMa512G+w+Pxci9hJPB8oMnkcP3iZF38=
 github.com/dgryski/go-farm v0.0.0-20240924180020-3414d57e47da/go.mod h1:SqUrOPUnsFjfmXRMNPybcSiG0BgUW2AuFH8PAnS2iTw=
 github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=
@@ -103,8 +103,8 @@ github.com/onsi/ginkgo/v2 v2.33.0 h1:C8gBA6Uc2ZEubiV+SXiu5tZnMTwEmXHgkJwGozKtZf8
 github.com/onsi/ginkgo/v2 v2.33.0/go.mod h1:+aXOY+vzZ5mu2iI2HpTZUPmM//oQfsNFX6gU9kNcA44=
 github.com/onsi/gomega v1.43.1 h1:vGIPFuYrIO6/0Z09s0I0QQQgFchiX4+tb1re3MScJYo=
 github.com/onsi/gomega v1.43.1/go.mod h1:e/C2HwaZ1DhvjzXXuFhcR7hY7Sh9pl7MmoWKEjzwcdA=
-github.com/pgx-contrib/pgxcache v0.0.0-20260410020444-2c456fcd21ee h1:8LgJ0GLrQ+1Z25fPD5erRmomzkotxS4P1fcEBIZy7gQ=
-github.com/pgx-contrib/pgxcache v0.0.0-20260410020444-2c456fcd21ee/go.mod h1:7Ag8q8XluCkkUD6db8XGOFkz6qSBJpZ4rwgInGR+oqM=
+github.com/pgx-contrib/pgxcache v0.0.0-20260923062715-d67793bc4f3a h1:+T5VzMF/1xL9Q5ares7ocHFrkSIzC7MMpf8Os7ylWW0=
+github.com/pgx-contrib/pgxcache v0.0.0-20260923062715-d67793bc4f3a/go.mod h1:xOmjnx1jKL0k7UDKJNHWoV53Z+NFJJybmdV5+Xw49mg=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/rogpeppe/go-internal v1.13.1 h1:KvO1DLK/DRN07sQ1LQKScxyZJuNnedQ5/wKSR38lUII=
